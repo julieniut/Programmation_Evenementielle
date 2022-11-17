@@ -1,13 +1,12 @@
 import time
 import requests
-import threading
+import multiprocessing
 
 
 img_urls = [
 'https://cdn.pixabay.com/photo/2017/07/15/19/42/train-track-2507499_1280.jpg',
 'https://pixabay.com/photos/android-linux-marshmallow-994910/'
 ]
-
 
 
 def download_image(img_url):
@@ -19,17 +18,12 @@ def download_image(img_url):
 
 if __name__ == '__main__':
     start = time.perf_counter()
-
-    t1 =threading.Thread(target=download_image, args=(img_urls[0],))
-    t2 =threading.Thread(target=download_image, args=(img_urls[1],))
-    t1.start()
-    t2.start()
-    t1.join()
-    t2.join()
+    p1 = multiprocessing.Process(target=download_image, args=(img_urls[0],))
+    p2 = multiprocessing.Process(target=download_image, args=(img_urls[1],))
+    p1.start()
+    p2.start()
+    p1.join()
+    p2.join()
 
     end = time.perf_counter()
-
     print(f"Tasks ended in {round(end - start, 2)} second(s)")
-
-
-
